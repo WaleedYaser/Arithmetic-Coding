@@ -69,38 +69,25 @@ class ArithmaticCoding:
 
         return value
 
-    def Decode(text, code, prob):
-
-        range_low = {}
-        range_high = {}
-
-        p_low = 0
-        for i in xrange(len(text)):
-            range_low[text[i]] = p_low
-            p_low += prob[i]
-            range_high[text[i]] = p_low    
-        
-        low_old = 0
-        high_old = 1
-        _range = high_old - low_old
-        
-        terminator = '$'
-
-        s = ""
+    def Decompress(self, code):
+        """
+            Uncompress given Arimatic code and return word.
+        """
+        s = "" # flag to stop the while loop
         result = ""
-        value = code
-        
-        while (s != terminator):
-            for k, v in range_low.iteritems():
-                if (value >= range_low[k] and value < range_high[k]):
-                    print k, v, value, _range
-                    result += k
-                    low = range_low[k]
-                    high = range_high[k]
+        while (s != self.terminator):
+            # find the key which has low <= code and high > code
+            for key, value in self.rangeLow.iteritems():
+                if (code >= self.rangeLow[key] and code < self.rangeHigh[key]):
+                    result += key # Append key to the result
+                    # update low, high, code
+                    low = self.rangeLow[key]
+                    high = self.rangeHigh[key]
                     _range = high - low
-                    value = (value - low)/_range
-                    if (k == terminator):
-                        s = k
+                    code = (code - low)/_range
+                    # chech for the terminator
+                    if (key == self.terminator):
+                        s = key
                         break
                     
         return result
