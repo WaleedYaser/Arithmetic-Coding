@@ -19,12 +19,11 @@ from Arithmatic import ArithmaticCoding
 symbols = []
 probs = []
 
-dataFile = file("test_data.txt")
-
 # Extract data from the file
-for line in dataFile:
-    symbols.append(line.split(" ")[0])
-    probs .append(float(line.split(" ")[1]))
+with file("test_data.txt") as dataFile:
+    for line in dataFile:
+        symbols.append(line.split(" ")[0])
+        probs.append(float(line.split(" ")[1]))
 
 
 # New object from the class
