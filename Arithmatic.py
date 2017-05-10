@@ -21,7 +21,6 @@ __version__ = "1.0"
         
     require:
         *python 2.7
-        *pyserial 2.7 library
 """
 
 class ArithmaticCoding:
