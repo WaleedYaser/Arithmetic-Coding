@@ -1,6 +1,32 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+__title__ = "Arithmatic Coding"
+__author__ = "Waleed Yaser (waleedyaser95@gmail.com)"
+__version__ = "1.0"
+
+"""
+    Arithmatic Coding
+    ~~~~~~~~~~~~~
+    A class for implementing Arithmatic coding.
+    
+    constructor takes 3 parameters:
+        *symbols list
+        *probalities list
+        *terminator charachter
+
+    There are 2 calable methods:
+        *Compress: take the word to compress and return code.
+        *Decompress: takes the compressed code and return word.
+        
+    require:
+        *python 2.7
+        *pyserial 2.7 library
+"""
 
 class ArithmaticCoding:
     """
+        
     """
     def __init__(self, symbols, probs, terminator):
         """
