@@ -9,7 +9,7 @@ __version__ = "1.0"
     Arithmatic Coding
     ~~~~~~~~~~~~~~~~~
     A class for implementing Arithmatic coding.
-    
+
     constructor takes 3 parameters:
         *symbols list
         *probalities list
@@ -18,15 +18,13 @@ __version__ = "1.0"
     There are 2 calable methods:
         *Compress: take the word to compress and return code.
         *Decompress: takes the compressed code and return word.
-        
+
     require:
         *python 2.7
 """
 
 class ArithmaticCoding:
-    """
-        
-    """
+    
     def __init__(self, symbols, probs, terminator):
         """
             Construct the probability range table in
@@ -36,7 +34,7 @@ class ArithmaticCoding:
         self.probs = probs
         self.__InitRangeTable()
         self.terminator = terminator # End of word.
-        
+
     def __InitRangeTable(self):
         """
             Complete the probability range table
@@ -44,7 +42,7 @@ class ArithmaticCoding:
             Symbol | Probability | Range low | Range high
             =============================================
                    |             |           |
-            ============================================= 
+            =============================================
         """
         self.rangeLow = {}
         self.rangeHigh = {}
@@ -56,13 +54,13 @@ class ArithmaticCoding:
             self.rangeLow[s] = rangeStart
             rangeStart += self.probs[i]
             self.rangeHigh[s] = rangeStart
-        
-    def Compress(self, word):   
+
+    def Compress(self, word):
         """
             Compress given word into Arimatic code and
             return code.
         """
-        
+
         lowOld = 0.0
         highOld = 1.0
         _range = 1.0
@@ -114,7 +112,7 @@ class ArithmaticCoding:
                     if (key == self.terminator):
                         s = key
                         break
-                    
+
         return result
 
     def __GetBinaryFractionValue(self, binaryFraction):
@@ -135,4 +133,3 @@ class ArithmaticCoding:
             power += 1
 
         return value
-    
