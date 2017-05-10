@@ -55,14 +55,23 @@ def Decode(text, code, prob):
     terminator = '$'
 
     s = ""
-
+    result = ""
+    value = code
+    
     while (s != terminator):
-        for (
-    
-    
-    
-
-    
+        for k, v in range_low.iteritems():
+            if (value >= range_low[k] and value < range_high[k]):
+                print k, v, value, _range
+                result += k
+                low = range_low[k]
+                high = range_high[k]
+                _range = high - low
+                value = (value - low)/_range
+                if (k == terminator):
+                    s = k
+                    break
+                
+    return result
 
 def GetValue(code):
     value = 0
