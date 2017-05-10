@@ -7,7 +7,7 @@ __version__ = "1.0"
 
 """
     Arithmatic Coding
-    ~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
     A class for implementing Arithmatic coding.
     
     constructor takes 3 parameters:
