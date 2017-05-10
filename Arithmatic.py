@@ -1,84 +1,126 @@
 
-def Encode(text, word, prob):
+class ArithmaticCoding:
+    """
+    """
+    def __init__(self, symbols, probs, terminator):
+        """
+            Construct the probability range table in
+            dictionaries data type.
+        """
+        self.symbols = symbols
+        self.probs = probs
+        self.__InitRangeTable()
+        self.terminator = terminator # End of word.
+        
+    def __InitRangeTable(self):
+        """
+            Complete the probability range table
+            =============================================
+            Symbol | Probability | Range low | Range high
+            =============================================
+                   |             |           |
+            ============================================= 
+        """
+        self.rangeLow = {}
+        self.rangeHigh = {}
 
-    range_low = {}
-    range_high = {}
+        rangeStart = 0
 
-    p_low = 0
-    for i in xrange(len(text)):
-        range_low[text[i]] = p_low
-        p_low += prob[i]
-        range_high[text[i]] = p_low    
-    
-    low_old = 0
-    high_old = 1
-    _range = high_old - low_old
-    
-    terminator = '$'
-    
-    for c in word:
-        print low_old, high_old, range_low[c], range_high[c], _range
-        low  = low_old + _range * range_low[c]
-        high = low_old + _range * range_high[c]
-        _range = high - low
-        low_old = low
-        high_old = high
-        print low, high, range_low[c], range_high[c], _range
-        print "=" * 10
+        for i in xrange(len(self.symbols)):
+            s = self.symbols[i]
+            self.rangeLow[s] = rangeStart
+            rangeStart += self.probs[i]
+            self.rangeHigh[s] = rangeStart
+        
+    def Compress(self, word):   
+        """
+            Compress given word into Arimatic code and
+            return code.
+        """
+        
+        lowOld = 0.0
+        highOld = 1.0
+        _range = 1.0
 
-    code = ["0", "."]
-    k = 2
+        # Iterate through the word to find the final range.
+        for c in word:
+            low  = lowOld + _range * self.rangeLow[c]
+            high = lowOld + _range * self.rangeHigh[c]
+            _range = high - low
 
-    while(GetValue("".join(code)) < low):
-        code.append('1')
-        if (GetValue("".join(code)) > high):
-            code[k] = '0'
-        k += 1
+            # Updete old low & hihh
+            lowOld = low
+            highOld = high
 
-    return GetValue("".join(code))
+        # Generating code word for encoder.
+        code = ["0", "."] # Binary fractional number
+        k = 2             # kth binary fraction bit
 
-def Decode(text, code, prob):
+        value = self.__GetBinaryFractionValue("".join(code))
+        while(value < low):
+            # Assign 1 to the kth binary fraction bit
+            code.append('1')
+            value = self.__GetBinaryFractionValue("".join(code))
+            if (value > high):
+                # Replace the kth bit by 0
+                code[k] = '0'
+            value = self.__GetBinaryFractionValue("".join(code))
+            k += 1
 
-    range_low = {}
-    range_high = {}
+        return value
 
-    p_low = 0
-    for i in xrange(len(text)):
-        range_low[text[i]] = p_low
-        p_low += prob[i]
-        range_high[text[i]] = p_low    
-    
-    low_old = 0
-    high_old = 1
-    _range = high_old - low_old
-    
-    terminator = '$'
+    def Decode(text, code, prob):
 
-    s = ""
-    result = ""
-    value = code
-    
-    while (s != terminator):
-        for k, v in range_low.iteritems():
-            if (value >= range_low[k] and value < range_high[k]):
-                print k, v, value, _range
-                result += k
-                low = range_low[k]
-                high = range_high[k]
-                _range = high - low
-                value = (value - low)/_range
-                if (k == terminator):
-                    s = k
-                    break
-                
-    return result
+        range_low = {}
+        range_high = {}
 
-def GetValue(code):
-    value = 0
-    power = 1
-    for i in code.split('.')[1]:
-        value += ((2 ** (-power)) * int(i))
-        power += 1
+        p_low = 0
+        for i in xrange(len(text)):
+            range_low[text[i]] = p_low
+            p_low += prob[i]
+            range_high[text[i]] = p_low    
+        
+        low_old = 0
+        high_old = 1
+        _range = high_old - low_old
+        
+        terminator = '$'
 
-    return value
+        s = ""
+        result = ""
+        value = code
+        
+        while (s != terminator):
+            for k, v in range_low.iteritems():
+                if (value >= range_low[k] and value < range_high[k]):
+                    print k, v, value, _range
+                    result += k
+                    low = range_low[k]
+                    high = range_high[k]
+                    _range = high - low
+                    value = (value - low)/_range
+                    if (k == terminator):
+                        s = k
+                        break
+                    
+        return result
+
+    def __GetBinaryFractionValue(self, binaryFraction):
+        """
+            Compute the binary fraction value using the formula
+            of:
+                (2^-1) * 1st bit + (2^-2) * 2nd bit + ...
+        """
+        value = 0
+        power = 1
+
+        # Git the fraction bits after "."
+        fraction = binaryFraction.split('.')[1]
+
+        # Compute the formula value
+        for i in fraction:
+            value += ((2 ** (-power)) * int(i))
+            power += 1
+
+        return value
     
