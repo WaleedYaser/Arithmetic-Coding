@@ -1,5 +1,5 @@
 # Arithmatic Coding
-My implementation for My implementation for Arithmetic Coding algorithm.
+My implementation for Arithmetic Coding algorithm.
 
 ## Getting Started
 You can view [__testSample.py__](testSample.py) code to get an idea about how to use the __ArithmaticCoding__ class.
